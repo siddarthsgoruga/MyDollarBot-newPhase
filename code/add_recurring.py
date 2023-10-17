@@ -16,7 +16,7 @@ def run(message, bot):
     markup.row_width = 2
     for c in helper.getSpendCategories():
         markup.add(c)
-    msg = bot.reply_to(message, 'Select Category', reply_markup=markup)
+    msg = bot.reply_to(message, 'Select Category or Select Cancel to cancel the operation', reply_markup=markup)
     bot.register_next_step_handler(msg, post_category_selection, bot)
 
 
@@ -27,10 +27,17 @@ def post_category_selection(message, bot):
         if selected_category not in helper.getSpendCategories():
             bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
             raise Exception("Sorry I don't recognise this category \"{}\"!".format(selected_category))
-
-        option[chat_id] = selected_category
-        message = bot.send_message(chat_id, 'How much did you spend on {}? \n(Enter numeric values only)'.format(str(option[chat_id])))
-        bot.register_next_step_handler(message, post_amount_input, bot, selected_category)
+        if selected_category != "Cancel":
+            option[chat_id] = selected_category
+            message = bot.send_message(chat_id, 'How much did you spend on {}? \n(Enter numeric values only) or enter Cancel to cancel the operation'.format(str(option[chat_id])))
+            bot.register_next_step_handler(message, post_amount_input, bot, selected_category)
+        else:
+            text_intro = "Cancelled the operation.\nSelect "
+            commands = helper.getExitCommands()
+            for c in commands:  # generate help text out of the commands dictionary defined at the top
+                text_intro += "/" + c + " to "
+                text_intro += commands[c] + "\n\n"
+            bot.send_message(chat_id, text_intro)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, 'Oh no! ' + str(e))
@@ -47,12 +54,20 @@ def post_amount_input(message, bot, selected_category):
     try:
         chat_id = message.chat.id
         amount_entered = message.text
-        amount_value = helper.validate_entered_amount(amount_entered)  # validate
-        if amount_value == 0:  # cannot be $0 spending
-            raise Exception("Spent amount has to be a non-zero number.")
-        
-        message = bot.send_message(chat_id, 'For how many months in the future will the expense be there? \n(Enter integer values only)'.format(str(option[chat_id])))
-        bot.register_next_step_handler(message, post_duration_input, bot, selected_category, amount_value)
+        if amount_entered != "Cancel":
+            amount_value = helper.validate_entered_amount(amount_entered)  # validate
+            if amount_value == 0:  # cannot be $0 spending
+                raise Exception("Spent amount has to be a non-zero number.")
+            
+            message = bot.send_message(chat_id, 'For how many months in the future will the expense be there? \n(Enter integer values only) or enter Cancel to cancel the operation'.format(str(option[chat_id])))
+            bot.register_next_step_handler(message, post_duration_input, bot, selected_category, amount_value)
+        else :
+            text_intro = "Cancelled the operation.\nSelect "
+            commands = helper.getExitCommands()
+            for c in commands:  # generate help text out of the commands dictionary defined at the top
+                text_intro += "/" + c + " to "
+                text_intro += commands[c] + "\n\n"
+            bot.send_message(chat_id, text_intro)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, 'Oh no. ' + str(e))
@@ -62,17 +77,24 @@ def post_duration_input(message, bot, selected_category, amount_value):
     try:
         chat_id = message.chat.id
         duration_entered = message.text
-        duration_value = helper.validate_entered_duration(duration_entered)
-        if duration_value == 0:
-            raise Exception("Duration has to be a non-zero integer.")
-                
-        for i in range(int(duration_value)):
-            date_of_entry = (datetime.today() + relativedelta(months=+i)).strftime(helper.getDateFormat() + ' ' + helper.getTimeFormat())
-            date_str, category_str, amount_str = str(date_of_entry), str(option[chat_id]), str(amount_value)
-            helper.write_json(add_user_record(chat_id, "{},{},{}".format(date_str, category_str, amount_str)))
-        
-        bot.send_message(chat_id, 'The following expenditure has been recorded: You have spent ${} for {} for the next {} months'.format(amount_str, category_str, duration_value))
-    
+        if duration_entered != 'Cancel':
+            duration_value = helper.validate_entered_duration(duration_entered)
+            if duration_value == 0:
+                raise Exception("Duration has to be a non-zero integer.")
+                    
+            for i in range(int(duration_value)):
+                date_of_entry = (datetime.today() + relativedelta(months=+i)).strftime(helper.getDateFormat() + ' ' + helper.getTimeFormat())
+                date_str, category_str, amount_str = str(date_of_entry), str(option[chat_id]), str(amount_value)
+                helper.write_json(add_user_record(chat_id, "{},{},{}".format(date_str, category_str, amount_str)))
+            
+            bot.send_message(chat_id, 'The following expenditure has been recorded: You have spent ${} for {} for the next {} months'.format(amount_str, category_str, duration_value))
+        else :
+            text_intro = "Cancelled the operation.\nSelect "
+            commands = helper.getExitCommands()
+            for c in commands:  # generate help text out of the commands dictionary defined at the top
+                text_intro += "/" + c + " to "
+                text_intro += commands[c] + "\n\n"
+            bot.send_message(chat_id, text_intro)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, 'Oh no. ' + str(e))
