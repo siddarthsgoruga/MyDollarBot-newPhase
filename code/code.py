@@ -56,6 +56,20 @@ def start_and_menu_command(m):
     return True
 
 
+# defines how the /exit commands have to be handled/processed
+@bot.message_handler(commands=['exit'])
+def exit_command(m):
+    helper.read_json()
+    global user_list
+    chat_id = m.chat.id
+    text_intro = "Exited from MyDollarBot ! Thank you for using MyDollarBot to track your expenses!\nIf you ever need to track expenses again, select "
+    commands = helper.getExitCommands()
+    for c in commands:  # generate help text out of the commands dictionary defined at the top
+        text_intro += "/" + c + " to "
+        text_intro += commands[c] + "\n\n"
+    bot.send_message(chat_id, text_intro)
+    return True
+
 # defines how the /new command has to be handled/processed
 # function to add an expense
 @bot.message_handler(commands=['add'])
@@ -104,6 +118,10 @@ def command_budget(message):
     budget.run(message, bot)
 
 @bot.message_handler(commands=['category'])
+def command_category(message):
+    category.run(message, bot)
+
+@bot.message_handler(commands=['exit'])
 def command_category(message):
     category.run(message, bot)
 

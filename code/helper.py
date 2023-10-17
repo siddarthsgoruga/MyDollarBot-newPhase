@@ -48,8 +48,14 @@ commands = {
     'delete': 'Clear/Erase all your records',
     'edit': 'Edit/Change spending details',
     'budget': 'Add/Update/View/Delete budget',
-    'category': 'Add/Delete/Show custom categories'
+    'category': 'Add/Delete/Show custom categories',
+    'exit' : 'Exit from MyDollarBot'
 }
+
+exit_commands = {
+    'menu': 'Display the menu'
+}
+
 
 dateFormat = '%d-%b-%Y'
 timeFormat = '%H:%M'
@@ -236,6 +242,7 @@ def getSpendCategories():
     with open("categories.txt", "r") as tf:
         spend_categories = tf.read().split(',')
     return spend_categories
+
 def getplot():
     return plot
 
@@ -281,3 +288,7 @@ def getUpdateOptions():
 
 def getCategoryOptions():
     return category_options
+
+
+def getExitCommands():
+    return exit_commands
