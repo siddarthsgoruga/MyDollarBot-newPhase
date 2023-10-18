@@ -8,7 +8,7 @@ from telebot import types
 
 def run(message, bot):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    options = helper.getBudgetOptions()
+    options = helper.getOptions()
     markup.row_width = 2
     for c in options.values():
         markup.add(c)
@@ -20,7 +20,7 @@ def post_operation_selection(message, bot):
     try:
         chat_id = message.chat.id
         op = message.text
-        options = helper.getBudgetOptions()
+        options = helper.getOptions()
         if op not in options.values():
             bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
             raise Exception("Sorry I don't recognise this operation \"{}\"!".format(op))
