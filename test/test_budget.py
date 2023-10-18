@@ -20,7 +20,7 @@ def test_post_operation_selection_failing_case(mock_telebot, mocker):
     mc.send_message.return_value = True
 
     mocker.patch.object(budget, 'helper')
-    budget.helper.getBudgetOptions.return_value = {}
+    budget.helper.getOptions.return_value = {}
 
     message = create_message("hello from budget test run!")
     budget.post_operation_selection(message, mc)
@@ -36,7 +36,7 @@ def test_post_operation_selection_update_case(mock_telebot, mocker):
     budget.budget_update.run.return_value = True
 
     mocker.patch.object(budget, 'helper')
-    budget.helper.getBudgetOptions.return_value = {
+    budget.helper.getOptions.return_value = {
         'update': 'Add/Update',
         'view': 'View',
         'delete': 'Delete'}
@@ -55,7 +55,7 @@ def test_post_operation_selection_view_case(mock_telebot, mocker):
     budget.budget_view.run.return_value = True
 
     mocker.patch.object(budget, 'helper')
-    budget.helper.getBudgetOptions.return_value = {
+    budget.helper.getOptions.return_value = {
         'update': 'Add/Update',
         'view': 'View',
         'delete': 'Delete'}
@@ -74,7 +74,7 @@ def test_post_operation_selection_delete_case(mock_telebot, mocker):
     budget.budget_delete.run.return_value = True
 
     mocker.patch.object(budget, 'helper')
-    budget.helper.getBudgetOptions.return_value = {
+    budget.helper.getOptions.return_value = {
         'update': 'Add/Update',
         'view': 'View',
         'delete': 'Delete'}
