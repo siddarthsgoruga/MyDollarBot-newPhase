@@ -31,7 +31,7 @@ def display_total(message, bot):
         DayWeekMonth = message.text
 
         if DayWeekMonth not in helper.getSpendDisplayOptions():
-            raise Exception("Sorry I can't show spendings for \"{}\"!".format(DayWeekMonth))
+            raise Exception("Invalid operation\"{}\"!Please try again by choosing a valid option".format(DayWeekMonth))
         if DayWeekMonth != "Cancel":
             history = helper.getUserHistory(chat_id)
             if history is None:
