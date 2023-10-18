@@ -48,10 +48,10 @@ def post_type_selection(message, bot):
 def update_overall_budget(chat_id, bot):
     if (helper.isOverallBudgetAvailable(chat_id)):
         currentBudget = helper.getOverallBudget(chat_id)
-        msg_string = 'Current Budget is ${}\n\nEnter your new monthly budget or Enter Cancel to cancel the operation \n(Enter numeric values only)'
+        msg_string = 'Current Budget is ${}\n\nEnter your new monthly budget (Enter numeric values only) or Enter Cancel to cancel the operation \n'
         message = bot.send_message(chat_id, msg_string.format(currentBudget))
     else:
-        message = bot.send_message(chat_id, 'Enter your monthly budget or Enter Cancel to cancel the operation \n(Enter numeric values only)')
+        message = bot.send_message(chat_id, 'Enter your monthly budget (Enter numeric values only)or Enter Cancel to cancel the operation \n')
     bot.register_next_step_handler(message, post_overall_amount_input, bot)
 
 
@@ -101,10 +101,10 @@ def post_category_selection(message, bot):
         if selected_category != "Cancel":
             if helper.isCategoryBudgetByCategoryAvailable(chat_id, selected_category):
                 currentBudget = helper.getCategoryBudgetByCategory(chat_id, selected_category)
-                msg_string = 'Current monthly budget for {} is {}\n\nEnter your new monthly budget for {} or Enter Cancel to cancel the operation\n(Enter numeric values only)'
+                msg_string = 'Current monthly budget for {} is {}\n\nEnter your new monthly budget for {} (Enter numeric values only) or Enter Cancel to cancel the operation\n'
                 message = bot.send_message(chat_id, msg_string.format(selected_category, currentBudget, selected_category))
             else:
-                message = bot.send_message(chat_id, 'Enter monthly budget for ' + selected_category + 'or Enter Cancel to cancel the operation\n(Enter numeric values only)')
+                message = bot.send_message(chat_id, 'Enter monthly budget for ' + selected_category + '(Enter numeric values only) or Enter Cancel to cancel the operation\n')
             bot.register_next_step_handler(message, post_category_amount_input, bot, selected_category)
         else:
             text_intro = "Cancelled the operation.\nSelect "
