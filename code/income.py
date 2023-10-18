@@ -55,7 +55,7 @@ def post_operation_selection(message, bot):
             bot.send_message(chat_id, text_intro)
         else:
           bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
-          raise Exception("Sorry I don't recognise this plot type \"{}\"!".format(op))
+          raise Exception("Sorry I don't recognise this operation \"{}\"!".format(op))
 
     except Exception as e:
         # print("hit exception")
