@@ -15,12 +15,14 @@ update_options = {
 options = {
     'update': 'Add/Update',
     'view': 'View',
-    'delete': 'Delete'
+    'delete': 'Delete',
+    'cancel': 'Cancel'
 }
 
 budget_types = {
     'overall': 'Overall Budget',
-    'category': 'Category-Wise Budget'
+    'category': 'Category-Wise Budget',
+    'cancel' : 'Cancel'
 }
 
 data_format = {
