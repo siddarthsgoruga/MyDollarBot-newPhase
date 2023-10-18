@@ -48,7 +48,7 @@ def start_and_menu_command(m):
     global user_list
     chat_id = m.chat.id
 
-    text_intro = "Welcome to MyDollarBot - a simple solution to track your expenses and manage them ! \n Please select the options from below for me to assist you with: \n\n"
+    text_intro = "Welcome to MyDollarBot - a simple solution to track your expenses and manage them ! \nPlease select the options from below for me to assist you with: \n\n"
     commands = helper.getCommands()
     for c in commands:  # generate help text out of the commands dictionary defined at the top
         text_intro += "/" + c + ": "
@@ -70,6 +70,7 @@ def exit_command(m):
         text_intro += commands[c] + "\n\n"
     bot.send_message(chat_id, text_intro)
     return True
+
 
 # defines how the /new command has to be handled/processed
 # function to add an expense
@@ -113,7 +114,6 @@ def command_estimate(message):
 def command_delete(message):
     delete.run(message, bot)
 
-
 @bot.message_handler(commands=['budget'])
 def command_budget(message):
     budget.run(message, bot)
@@ -122,14 +122,21 @@ def command_budget(message):
 def command_category(message):
     category.run(message, bot)
 
-@bot.message_handler(commands=['exit'])
-def command_category(message):
-    category.run(message, bot)
-
 @bot.message_handler(commands=['income'])
-def command_category(message):
+def command_income(message):
     income.run(message, bot)
 
+@bot.message_handler(content_types=['audio', 'photo', 'voice', 'video', 'document','text', 'location', 'contact', 'sticker'])
+def default_command(message):
+    chat_id = message.chat.id
+    text_intro = "Sorry! There is no such option "+message.text+". Choose an option only from given menu.\nSelect "
+    commands = helper.getExitCommands()
+    for c in commands:  # generate help text out of the commands dictionary defined at the top
+        text_intro += "/" + c + " to "
+        text_intro += commands[c] + "\n\n"
+    bot.send_message(chat_id, text_intro)
+    return True
+    
 # not used
 def addUserHistory(chat_id, user_record):
     global user_list
