@@ -1,21 +1,29 @@
 import re
 import helper
+import logging
 from telebot import types
 
 
 def run(m, bot):
-    chat_id = m.chat.id
-    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    markup.row_width = 2
-    for c in helper.getUserHistory(chat_id):
-        expense_data = c.split(',')
-        str_date = "Date=" + expense_data[0]
-        str_category = ",\t\tCategory=" + expense_data[1]
-        str_amount = ",\t\tAmount=$" + expense_data[2]
-        markup.add(str_date + str_category + str_amount)
-    info = bot.reply_to(m, "Select expense to be edited:", reply_markup=markup)
-    bot.register_next_step_handler(info, select_category_to_be_updated, bot)
-
+    try :
+        chat_id = m.chat.id
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        markup.row_width = 2
+        if helper.getUserHistory(chat_id) is None:
+                raise Exception("Sorry! No spending records found!")
+        if helper.getUserHistory(chat_id) == 0:
+                raise Exception("Sorry! No spending records found!")
+        for c in helper.getUserHistory(chat_id):
+            expense_data = c.split(',')
+            str_date = "Date=" + expense_data[0]
+            str_category = ",\t\tCategory=" + expense_data[1]
+            str_amount = ",\t\tAmount=$" + expense_data[2]
+            markup.add(str_date + str_category + str_amount)
+        info = bot.reply_to(m, "Select expense to be edited:", reply_markup=markup)
+        bot.register_next_step_handler(info, select_category_to_be_updated, bot)
+    except Exception as e:
+        logging.exception(str(e))
+        bot.reply_to(m, "Oops! " + str(e))
 
 def select_category_to_be_updated(m, bot):
     info = m.text
