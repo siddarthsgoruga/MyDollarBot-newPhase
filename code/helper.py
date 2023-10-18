@@ -37,7 +37,8 @@ data_format = {
 category_options = {
     'add': 'Add',
     'delete': 'Delete',
-    'view': 'Show Categories'
+    'view': 'Show Categories',
+    'cancel' : 'Cancel'
 }
 
 # set of implemented commands and their description
