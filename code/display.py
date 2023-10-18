@@ -19,9 +19,8 @@ def run(message, bot):
         for mode in helper.getSpendDisplayOptions():
             markup.add(mode)
         # markup.add('Day', 'Month')
-        msg = bot.reply_to(message, 'Please select a category to see details', reply_markup=markup)
+        msg = bot.reply_to(message, 'Please select a category to see details or Select Cancel to cancel the operation', reply_markup=markup)
         bot.register_next_step_handler(msg, display_total, bot)
-
 total=""
 bud=""
 def display_total(message, bot):
@@ -33,50 +32,57 @@ def display_total(message, bot):
 
         if DayWeekMonth not in helper.getSpendDisplayOptions():
             raise Exception("Sorry I can't show spendings for \"{}\"!".format(DayWeekMonth))
+        if DayWeekMonth != "Cancel":
+            history = helper.getUserHistory(chat_id)
+            if history is None:
+                raise Exception("Oops! Looks like you do not have any spending records!")
 
-        history = helper.getUserHistory(chat_id)
-        if history is None:
-            raise Exception("Oops! Looks like you do not have any spending records!")
+            bot.send_message(chat_id, "Hold on! Calculating...")
+            # show the bot "typing" (max. 5 secs)
+            bot.send_chat_action(chat_id, 'typing')
+            time.sleep(0.5)
+            total_text = ""
+            # get budget data
+            budgetData = {}
+            if helper.isOverallBudgetAvailable(chat_id):
+                budgetData = helper.getOverallBudget(chat_id)
+            elif helper.isCategoryBudgetAvailable(chat_id):
+                budgetData = helper.getCategoryBudget(chat_id)
 
-        bot.send_message(chat_id, "Hold on! Calculating...")
-        # show the bot "typing" (max. 5 secs)
-        bot.send_chat_action(chat_id, 'typing')
-        time.sleep(0.5)
-        total_text = ""
-        # get budget data
-        budgetData = {}
-        if helper.isOverallBudgetAvailable(chat_id):
-            budgetData = helper.getOverallBudget(chat_id)
-        elif helper.isCategoryBudgetAvailable(chat_id):
-            budgetData = helper.getCategoryBudget(chat_id)
+            if DayWeekMonth == 'Day':
+                query = datetime.now().today().strftime(helper.getDateFormat())
+                # query all that contains today's date
+                queryResult = [value for index, value in enumerate(history) if str(query) in value]
+            elif DayWeekMonth == 'Month':
+                query = datetime.now().today().strftime(helper.getMonthFormat())
+                # query all that contains today's date
+                queryResult = [value for index, value in enumerate(history) if str(query) in value]
 
-        if DayWeekMonth == 'Day':
-            query = datetime.now().today().strftime(helper.getDateFormat())
-            # query all that contains today's date
-            queryResult = [value for index, value in enumerate(history) if str(query) in value]
-        elif DayWeekMonth == 'Month':
-            query = datetime.now().today().strftime(helper.getMonthFormat())
-            # query all that contains today's date
-            queryResult = [value for index, value in enumerate(history) if str(query) in value]
-
-        total_text = calculate_spendings(queryResult)
-        total=total_text
-        bud=budgetData
-        spending_text = display_budget_by_text(history, budgetData)
-        if len(total_text) == 0:
-            spending_text += "----------------------\nYou have no spendings for {}!".format(DayWeekMonth)
-            bot.send_message(chat_id, spending_text)
+            total_text = calculate_spendings(queryResult)
+            total=total_text
+            bud=budgetData
+            spending_text = display_budget_by_text(history, budgetData)
+            if len(total_text) == 0:
+                spending_text += "----------------------\nYou have no spendings for {}!".format(DayWeekMonth)
+                bot.send_message(chat_id, spending_text)
+            else:
+                spending_text += "\n----------------------\nHere are your total spendings {}:\nCATEGORIES,AMOUNT \n----------------------\n{}".format(
+                    DayWeekMonth.lower(), total_text)
+                bot.send_message(chat_id, spending_text)
+                markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+                markup.row_width = 2
+                for plot in helper.getplot():
+                    markup.add(plot)
+                    # markup.add('Day', 'Month')
+                msg = bot.reply_to(message, 'Please select a plot to see the total expense or Type Cancel to cancel the operation', reply_markup=markup)
+                bot.register_next_step_handler(msg, plot_total, bot)
         else:
-            spending_text += "\n----------------------\nHere are your total spendings {}:\nCATEGORIES,AMOUNT \n----------------------\n{}".format(
-                DayWeekMonth.lower(), total_text)
-            bot.send_message(chat_id, spending_text)
-            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-            markup.row_width = 2
-            for plot in helper.getplot():
-               markup.add(plot)
-              # markup.add('Day', 'Month')
-            msg = bot.reply_to(message, 'Please select a plot to see the total expense', reply_markup=markup)
-            bot.register_next_step_handler(msg, plot_total, bot)
+            text_intro = "Cancelled the operation.\nSelect "
+            commands = helper.getExitCommands()
+            for c in commands:  # generate help text out of the commands dictionary defined at the top
+                text_intro += "/" + c + " to "
+                text_intro += commands[c] + "\n\n"
+            bot.send_message(chat_id, text_intro)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
@@ -85,7 +91,6 @@ def plot_total(message, bot):
      chat_id = message.chat.id
      pyi=message.text
      if pyi == 'Bar with budget':
-       
        graphing.visualize(total,bud)
        bot.send_photo(chat_id, photo=open('expenditure.png', 'rb'))
        os.remove('expenditure.png')
@@ -93,10 +98,20 @@ def plot_total(message, bot):
        graphing.viz(total)
        bot.send_photo(chat_id, photo=open('expend.png', 'rb'))
        os.remove('expend.png')
-     else:
+     elif pyi == 'Pie':
        graphing.vis(total)
        bot.send_photo(chat_id, photo=open('pie.png', 'rb'))
        os.remove('pie.png')
+     elif pyi == 'Cancel':
+        text_intro = "Cancelled the operation.\nSelect "
+        commands = helper.getExitCommands()
+        for c in commands:  # generate help text out of the commands dictionary defined at the top
+            text_intro += "/" + c + " to "
+            text_intro += commands[c] + "\n\n"
+        bot.send_message(chat_id, text_intro)
+     else:
+          bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
+          raise Exception("Sorry I don't recognise this plot type \"{}\"!".format(pyi))
 def calculate_spendings(queryResult):
     total_dict = {}
 

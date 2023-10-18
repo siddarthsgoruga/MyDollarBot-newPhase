@@ -4,8 +4,8 @@ import os
 from datetime import datetime
 
 choices = ['Date', 'Category', 'Cost']
-plot = ['Bar with budget', 'Pie','Bar without budget']
-spend_display_option = ['Day', 'Month']
+plot = ['Bar with budget', 'Pie','Bar without budget','Cancel']
+spend_display_option = ['Day', 'Month','Cancel']
 spend_estimate_option = ['Next day', 'Next month']
 update_options = {
     'continue': 'Continue',
