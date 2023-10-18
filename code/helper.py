@@ -6,7 +6,7 @@ from datetime import datetime
 choices = ['Date', 'Category', 'Cost']
 plot = ['Bar with budget', 'Pie','Bar without budget','Cancel']
 spend_display_option = ['Day', 'Month','Cancel']
-spend_estimate_option = ['Next day', 'Next month']
+spend_estimate_option = ['Next day', 'Next month','Cancel']
 update_options = {
     'continue': 'Continue',
     'exit': 'Exit'

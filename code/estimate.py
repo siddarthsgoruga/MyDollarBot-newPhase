@@ -16,9 +16,8 @@ def run(message, bot):
         markup.row_width = 2
         for mode in helper.getSpendEstimateOptions():
             markup.add(mode)
-        # markup.add('Day', 'Month')
         msg = bot.reply_to(
-            message, 'Please select the period to estimate',
+            message, 'Please select the period to estimate or Select Cancel to cancel the operation',
             reply_markup=markup)
         bot.register_next_step_handler(msg, estimate_total, bot)
 
@@ -27,44 +26,50 @@ def estimate_total(message, bot):
     try:
         chat_id = message.chat.id
         DayWeekMonth = message.text
+        if DayWeekMonth != 'Cancel':
+            if DayWeekMonth not in helper.getSpendEstimateOptions():
+                raise Exception(
+                    "Sorry I can't show an estimate for \"{}\"!".format(
+                        DayWeekMonth))
+            history = helper.getUserHistory(chat_id)
+            if history is None:
+                raise Exception(
+                    "Oops! Looks like you do not have any spending records!")
 
-        if DayWeekMonth not in helper.getSpendEstimateOptions():
-            raise Exception(
-                "Sorry I can't show an estimate for \"{}\"!".format(
-                    DayWeekMonth))
+            bot.send_message(chat_id, "Hold on! Calculating...")
+            # show the bot "typing" (max. 5 secs)
+            bot.send_chat_action(chat_id, 'typing')
+            time.sleep(0.5)
 
-        history = helper.getUserHistory(chat_id)
-        if history is None:
-            raise Exception(
-                "Oops! Looks like you do not have any spending records!")
+            total_text = ""
+            days_to_estimate = 0
+            if DayWeekMonth == 'Next day':
+                days_to_estimate = 1
+            elif DayWeekMonth == 'Next month':
+                days_to_estimate = 30
+                # query all that contains today's date
+            # query all that contains all history
+            queryResult = [value for index, value in enumerate(history)]
 
-        bot.send_message(chat_id, "Hold on! Calculating...")
-        # show the bot "typing" (max. 5 secs)
-        bot.send_chat_action(chat_id, 'typing')
-        time.sleep(0.5)
+            total_text = calculate_estimate(queryResult, days_to_estimate)
 
-        total_text = ""
-        days_to_estimate = 0
-        if DayWeekMonth == 'Next day':
-            days_to_estimate = 1
-        elif DayWeekMonth == 'Next month':
-            days_to_estimate = 30
-            # query all that contains today's date
-        # query all that contains all history
-        queryResult = [value for index, value in enumerate(history)]
+            spending_text = ""
+            if len(total_text) == 0:
+                spending_text = "You have no estimate for {}!".format(DayWeekMonth)
+            else:
+                spending_text = "Here are your estimated spendings"
+                spending_text += " for the " + DayWeekMonth.lower()
+                spending_text += ":\nCATEGORIES,AMOUNT \n----------------------\n"
+                spending_text += total_text
 
-        total_text = calculate_estimate(queryResult, days_to_estimate)
-
-        spending_text = ""
-        if len(total_text) == 0:
-            spending_text = "You have no estimate for {}!".format(DayWeekMonth)
-        else:
-            spending_text = "Here are your estimated spendings"
-            spending_text += " for the " + DayWeekMonth.lower()
-            spending_text += ":\nCATEGORIES,AMOUNT \n----------------------\n"
-            spending_text += total_text
-
-        bot.send_message(chat_id, spending_text)
+            bot.send_message(chat_id, spending_text)
+        else :
+            text_intro = "Cancelled the operation.\nSelect "
+            commands = helper.getExitCommands()
+            for c in commands:  # generate help text out of the commands dictionary defined at the top
+                text_intro += "/" + c + " to "
+                text_intro += commands[c] + "\n\n"
+            bot.send_message(chat_id, text_intro)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
