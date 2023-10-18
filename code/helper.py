@@ -12,7 +12,7 @@ update_options = {
     'exit': 'Exit'
 }
 
-budget_options = {
+options = {
     'update': 'Add/Update',
     'view': 'View',
     'delete': 'Delete'
@@ -25,6 +25,7 @@ budget_types = {
 
 data_format = {
     'data': [],
+    'income': None,
     'budget': {
         'overall': None,
         'category': None
@@ -48,6 +49,7 @@ commands = {
     'delete': 'Clear/Erase all your records',
     'edit': 'Edit/Change spending details',
     'budget': 'Add/Update/View/Delete budget',
+    'income': 'Add/Update/View/Delete income',
     'category': 'Add/Delete/Show custom categories',
     'exit' : 'Exit from MyDollarBot'
 }
@@ -137,6 +139,12 @@ def getOverallBudget(chatId):
         return None
     return data['budget']['overall']
 
+def getTotalIncome(chatId):
+    data = getUserData(chatId)
+    if data is None:
+        return None
+    return data['income']
+
 
 def getCategoryBudget(chatId):
     data = getUserData(chatId)
@@ -159,6 +167,9 @@ def canAddBudget(chatId):
 def isOverallBudgetAvailable(chatId):
     return getOverallBudget(chatId) is not None
 
+
+def isTotalIncomeAvailable(chatId):
+    return getTotalIncome(chatId) is not None 
 
 def isCategoryBudgetAvailable(chatId):
     return getCategoryBudget(chatId) is not None
@@ -274,8 +285,8 @@ def getChoices():
     return choices
 
 
-def getBudgetOptions():
-    return budget_options
+def getOptions():
+    return options
 
 
 def getBudgetTypes():
