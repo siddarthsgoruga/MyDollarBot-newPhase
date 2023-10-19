@@ -5,7 +5,7 @@ Link to delta of Phase 4 - [Video to be added](https://drive.google.com/file/d/1
 This video shows only the new features and enhancement of some older features. All the other features from phase 3 are working as it is.
 <hr>
 <p align="center">
-<a><img  height=380 width=550 
+<a><img  height=420 width=550 
   src="https://github.com/21Tulasi/MyDollarBot-newPhase/blob/main/docs/trackmydollar.png" alt="Tracking expenses made easy!"></a>
 </p>
 <hr>
