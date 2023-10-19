@@ -27,23 +27,26 @@ This video shows only the new features and enhancement of some older features. A
 
 TrackMyDollar is an easy-to-use Telegram Bot that assists you in recording your daily expenses on a local system without any hassle 
 With simple commands, this bot allows you to:
+- Add/Update/View/Delete Income
 - Add/Record a new spending
+- Add/Update/View/Delete Budget
 - Show the sum of your expenditure for the current day/month
 - Display your spending history
+- Summary report of all expenses done till date
 - Clear/Erase all your records
 - Edit/Change any spending details if you wish to
 
 
 ## What's new? (From Phase 3 to Phase 4)
 
-- Recurring expense:
-  Add a recurring expense that adds a certain amount every month to the user's spending, for any given category.
+- Manage Income:
+  User can add certain amount as income and can view/delete or update the same
   
-- Custom category:
-  User can add a new category and delete an existing category as per the needs
+- Alert messages:
+  The Bot alerts the user with a warning message when either the given budget exceeds the income(both overall and categorical budget) or the expense crosses the budget.
   
-- Budgeting:
-  User can see the budget value for the total expense and/or for each of the existing categories in the /display function
+- Summary report:
+  A PDF report is generated that consists of the summarised expenses done till date.
   
 - Better visualization:
   Added pie charts, bar graphs with and without budget lines for the user to have a look at the spending history in a better manner
