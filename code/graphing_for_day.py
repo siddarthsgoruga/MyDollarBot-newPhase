@@ -11,6 +11,8 @@ def addlabels(x, y):
 
 def visualize(total_text, budgetData):
     # set the color for bars
+    print(total_text,"total text from the base case")
+    print(budgetData,"budgetData from the base case")
     colors = ['red', 'cornflowerblue', 'greenyellow', 'orange', 'violet', 'grey']
     # plot the expense bar chart
     total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
@@ -58,7 +60,7 @@ def visualize(total_text, budgetData):
             colorCnt += 1
 
     plt.legend(lines, labels)
-    plt.savefig('expenditure.png', bbox_inches='tight')
+    plt.savefig('expenditure_day.png', bbox_inches='tight')
 
     # clean the plot to avoid the old data remains on it
     plt.clf()
@@ -84,7 +86,7 @@ def vis(total_text):
     ##plt.xlabel("Expenditure")
     ##plt.xticks(rotation=90)
 
-    plt.savefig('pie.png')
+    plt.savefig('pie_day.png')
 
 
 def viz(total_text):
@@ -105,4 +107,4 @@ def viz(total_text):
     plt.xlabel("Categories")
     plt.xticks(rotation=45)
 
-    plt.savefig('expend.png', bbox_inches='tight')
+    plt.savefig('expend_day.png', bbox_inches='tight')

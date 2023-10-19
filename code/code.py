@@ -14,6 +14,7 @@ import budget
 import category
 import income
 import add_recurring
+import summary
 from datetime import datetime
 from jproperties import Properties
 
@@ -126,6 +127,11 @@ def command_category(message):
 def command_income(message):
     income.run(message, bot)
 
+
+@bot.message_handler(commands=['summary'])
+def command_category(message):
+    summary.run(message, bot)
+
 @bot.message_handler(content_types=['audio', 'photo', 'voice', 'video', 'document','text', 'location', 'contact', 'sticker'])
 def default_command(message):
     chat_id = message.chat.id
@@ -137,6 +143,8 @@ def default_command(message):
     bot.send_message(chat_id, text_intro)
     return True
     
+
+
 # not used
 def addUserHistory(chat_id, user_record):
     global user_list

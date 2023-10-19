@@ -53,6 +53,7 @@ def display_total(message, bot):
                 query = datetime.now().today().strftime(helper.getDateFormat())
                 # query all that contains today's date
                 queryResult = [value for index, value in enumerate(history) if str(query) in value]
+                print(queryResult,"this is display")
             elif DayWeekMonth == 'Month':
                 query = datetime.now().today().strftime(helper.getMonthFormat())
                 # query all that contains today's date
@@ -76,6 +77,9 @@ def display_total(message, bot):
                     # markup.add('Day', 'Month')
                 msg = bot.reply_to(message, 'Please select a plot to see the total expense or Type Cancel to cancel the operation', reply_markup=markup)
                 bot.register_next_step_handler(msg, plot_total, bot)
+            
+
+
         else:
             text_intro = "Cancelled the operation.\nSelect "
             commands = helper.getExitCommands()
@@ -83,6 +87,8 @@ def display_total(message, bot):
                 text_intro += "/" + c + " to "
                 text_intro += commands[c] + "\n\n"
             bot.send_message(chat_id, text_intro)
+
+        
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
@@ -116,6 +122,7 @@ def calculate_spendings(queryResult):
     total_dict = {}
 
     for row in queryResult:
+        #print(row,"this is calculate")
         # date,cat,money
         s = row.split(',')
         # cat
@@ -128,7 +135,10 @@ def calculate_spendings(queryResult):
     total_text = ""
     for key, value in total_dict.items():
         total_text += str(key) + " $" + str(value) + "\n"
+    print(total_text)
     return total_text
+
+
 
 
 def display_budget_by_text(history, budget_data) -> str:

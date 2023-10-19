@@ -58,7 +58,7 @@ def visualize(total_text, budgetData):
             colorCnt += 1
 
     plt.legend(lines, labels)
-    plt.savefig('expenditure.png', bbox_inches='tight')
+    plt.savefig('expenditure_month.png', bbox_inches='tight')
 
     # clean the plot to avoid the old data remains on it
     plt.clf()
@@ -84,7 +84,7 @@ def vis(total_text):
     ##plt.xlabel("Expenditure")
     ##plt.xticks(rotation=90)
 
-    plt.savefig('pie.png')
+    plt.savefig('pie_month.png')
 
 
 def viz(total_text):
@@ -105,4 +105,4 @@ def viz(total_text):
     plt.xlabel("Categories")
     plt.xticks(rotation=45)
 
-    plt.savefig('expend.png', bbox_inches='tight')
+    plt.savefig('expend_month.png', bbox_inches='tight')

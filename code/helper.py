@@ -43,7 +43,8 @@ category_options = {
 
 # set of implemented commands and their description
 commands = {
-    'menu': 'Display this menu',
+    'menu': 'Display this menu',    
+    'income': 'Add/Update/View/Delete income',
     'add': 'Record/Add a new spending',
     'add_recurring': 'Add a new recurring expense for future months',
     'display': 'Show sum of expenditure for the current day/month',
@@ -52,11 +53,10 @@ commands = {
     'delete': 'Clear/Erase all your records',
     'edit': 'Edit/Change spending details',
     'budget': 'Add/Update/View/Delete budget',
-    'income': 'Add/Update/View/Delete income',
     'category': 'Add/Delete/Show custom categories',
+    'summary': 'show summary of spending',
     'exit' : 'Exit from MyDollarBot'
 }
-
 exit_commands = {
     'menu': 'Display the menu'
 }
