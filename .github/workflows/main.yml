@@ -44,6 +44,15 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
         # Install pytest (you can use some other testing utility)
+      - name: Install mock
+        run: pip install mock
+
+      - name: Install coverage
+        run: pip install coverage
+
+      - name: Install codecov
+        run: pip install codecov
+
       - name: Install pytest
         run: |
           python -m pip install --upgrade pip
