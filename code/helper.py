@@ -12,6 +12,11 @@ update_options = {
     'exit': 'Exit'
 }
 
+yes_or_no = {
+    'yes': 'Yes',
+    'no': 'No'
+}
+
 options = {
     'update': 'Add/Update',
     'view': 'View',
@@ -299,6 +304,8 @@ def getBudgetTypes():
 def getUpdateOptions():
     return update_options
 
+def getYesNoOptions():
+    return yes_or_no
 
 def getCategoryOptions():
     return category_options
