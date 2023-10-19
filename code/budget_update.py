@@ -157,17 +157,32 @@ def post_category_amount_input(message, bot, category):
         chat_id = message.chat.id
         if message.text != 'Cancel':
             amount_value = helper.validate_entered_amount(message.text)
-            if amount_value == 0:
-                raise Exception("Invalid amount.")
-            user_list = helper.read_json()
-            if str(chat_id) not in user_list:
-                user_list[str(chat_id)] = helper.createNewUserRecord()
-            if user_list[str(chat_id)]['budget']['category'] is None:
-                user_list[str(chat_id)]['budget']['category'] = {}
-            user_list[str(chat_id)]['budget']['category'][category] = amount_value
-            helper.write_json(user_list)
-            message = bot.send_message(chat_id, 'Budget for ' + category + ' Created!')
-            post_category_add(message, bot)
+            data = helper.getCategoryBudget(chat_id)
+            categ_sum = 0.0
+            if data is not None and category in data :
+                categ_sum = float(data[category]) 
+            
+            category_total = sum(float(value) for value in data.values()) if data is not None else 0.0
+            total_sum = category_total + float(amount_value) - categ_sum
+            total_income = float(helper.getTotalIncome(chat_id))
+
+            if total_income is not None and total_sum > total_income:
+                budget_deficit = total_sum - total_income
+                alert_message = f"⚠️\uFE0F Your total budget exceeds your total income by ${budget_deficit:.2f} " + "\n(Do you want to update your budget)"
+    
+                # Define markup here before using it
+                markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+                options = helper.getYesNoOptions().values()
+                markup.row_width = 2
+                for c in options:
+                    markup.add(c)
+                
+                bot.send_message(chat_id, alert_message, reply_markup=markup)
+                msg = bot.reply_to(message, 'Select Option', reply_markup=markup)
+                bot.register_next_step_handler(msg, post_yesno_selection, bot, amount_value, category)
+            else :
+                update_category_budget_amount(chat_id, bot, amount_value, category)
+      
         else :
             text_intro = "Cancelled the operation.\nSelect "
             commands = helper.getExitCommands()
@@ -177,6 +192,30 @@ def post_category_amount_input(message, bot, category):
             bot.send_message(chat_id, text_intro)
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
+
+
+def post_yesno_selection(message, bot, amount_val, category ) :
+    chat_id = message.chat.id
+    selected_option = message.text
+    options = helper.getYesNoOptions()
+    if selected_option == options['yes']:
+        update_category_budget_amount( chat_id, bot, amount_val, category)
+    else :
+        update_category_budget(message, bot)
+
+
+def update_category_budget_amount(chat_id, bot, amount_val, category) :
+    if amount_val == 0:
+            raise Exception("Invalid amount.")
+    user_list = helper.read_json()
+    if str(chat_id) not in user_list:
+        user_list[str(chat_id)] = helper.createNewUserRecord()
+    if user_list[str(chat_id)]['budget']['category'] is None:
+        user_list[str(chat_id)]['budget']['category'] = {}
+    user_list[str(chat_id)]['budget']['category'][category] = amount_val
+    helper.write_json(user_list)
+    message = bot.send_message(chat_id, 'Budget for ' + category + ' Created!')
+    post_category_add(message, bot)
 
 
 def post_category_add(message, bot):
