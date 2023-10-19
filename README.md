@@ -60,7 +60,11 @@ Please refer to the issue list available [here](https://github.com/prithvish-dos
 
 ## Demo
 
-https://user-images.githubusercontent.com/72677919/140454147-f879010a-173b-47b9-9cfb-a389171924de.mp4
+![trackmydollar](https://github.com/21Tulasi/MyDollarBot-newPhase/assets/68286340/bae1e5ed-3c90-4d4f-a30d-616d0e152415)
+
+
+https://github.com/21Tulasi/MyDollarBot-newPhase/assets/68286340/26492210-eed5-4022-8a4e-cd5f2bee8d9c
+
 
 ## Installation guide
 
