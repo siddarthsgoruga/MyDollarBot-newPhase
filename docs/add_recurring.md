@@ -12,7 +12,7 @@ Currently we have the following expense categories set by default:
 The user can choose a an existing category or add custom category and add the amount they have spent to be stored in the expense tracker.
 
 # Location of Code for this Feature
-The code that implements this feature can be found [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/blob/main/code/add_recurring.py)
+The code that implements this feature can be found [here](https://github.com/21Tulasi/MyDollarBot-newPhase/blob/main/code/add_recurring.py)
 
 # Code Description
 ## Functions
