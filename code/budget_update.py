@@ -1,15 +1,21 @@
-import helper
-import logging
-from telebot import types
+import helper # Import the helper module for utility functions
+import logging # Import the logging module for error handling
+from telebot import types  # Import the 'types' module from the 'telebot' library
 
 
+# Define a function to update the overall or category budget
 def run(message, bot):
-    chat_id = message.chat.id
+    chat_id = message.chat.id # Get the chat ID from the message
+    
+    # Check if an overall budget is available for the user
     if helper.isOverallBudgetAvailable(chat_id):
         update_overall_budget(chat_id, bot)
+    
+    # Check if a category budget is available for the user
     elif helper.isCategoryBudgetAvailable(chat_id):
         update_category_budget(message, bot)
     else:
+        # If no budget is available, prompt the user to select a budget type
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         options = helper.getBudgetTypes()
         markup.row_width = 2
@@ -18,13 +24,14 @@ def run(message, bot):
         msg = bot.reply_to(message, 'Select Budget Type or Select Cancel to cancel the operation', reply_markup=markup)
         bot.register_next_step_handler(msg, post_type_selection, bot)
 
-
+# Function to handle the user's budget type selection
 def post_type_selection(message, bot):
     try:
         chat_id = message.chat.id
         op = message.text
         options = helper.getBudgetTypes()
 
+        # Check if the selected option is valid
         if op not in options.values():
             bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
             raise Exception("Sorry I don't recognise this operation \"{}\"!".format(op))
@@ -46,7 +53,7 @@ def post_type_selection(message, bot):
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
 
-
+# Function to update the overall budget
 def update_overall_budget(chat_id, bot):
     if (helper.isOverallBudgetAvailable(chat_id)):
         currentBudget = helper.getOverallBudget(chat_id)
@@ -57,6 +64,7 @@ def update_overall_budget(chat_id, bot):
     bot.register_next_step_handler(message, post_overall_amount_input, bot)
 
 
+# Function to handle the user's input for the overall budget amount
 def post_overall_amount_input(message, bot):
     try:
         chat_id = message.chat.id
@@ -93,7 +101,7 @@ def post_overall_amount_input(message, bot):
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
 
-
+# Function to handle the user's yes/no selection after budget alert
 def post__selection(message, bot, amount_val ) :
     chat_id = message.chat.id
     selected_option = message.text
@@ -103,7 +111,7 @@ def post__selection(message, bot, amount_val ) :
     else :
         update_overall_budget(chat_id, bot)
 
-
+# Function to update the overall budget amount
 def update_overall_budget_amount(message, amount_value, bot) :
     chat_id = message.chat.id
     if amount_value == 0:
@@ -115,6 +123,7 @@ def update_overall_budget_amount(message, amount_value, bot) :
     helper.write_json(user_list)
     bot.send_message(chat_id, 'Budget Updated!')
 
+# Function to update the category budget
 def update_category_budget(message, bot):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     categories = helper.getSpendCategories()
@@ -125,6 +134,7 @@ def update_category_budget(message, bot):
     bot.register_next_step_handler(msg, post_category_selection, bot)
 
 
+# Function to handle the user's category selection
 def post_category_selection(message, bot):
     try:
         chat_id = message.chat.id
