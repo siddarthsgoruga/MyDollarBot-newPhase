@@ -1,4 +1,4 @@
-# 💰 TrackMyDollar V2.0 - Budget On The Go(BOTGo) 💰
+# 💰 TrackMyDollar V3.0 - Budget On The Go(BOTGo) 💰
 
 Link to delta of Phase 3 - [https://drive.google.com/file/d/1VqQPTm4tFjG8mbixrjqvjnmgsYb8YD49/view?usp=sharing](https://drive.google.com/file/d/1VqQPTm4tFjG8mbixrjqvjnmgsYb8YD49/view?usp=sharing)
 
