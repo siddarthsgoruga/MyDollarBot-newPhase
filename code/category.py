@@ -5,11 +5,15 @@ from telebot import types
 # The main funtion of category.py.
 # User can start to manage their categories after calling it
 def run(message, bot):
+
+     # Create a reply keyboard markup for user interaction
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     options = helper.getCategoryOptions()
     markup.row_width = 2
     for c in options.values():
         markup.add(c)
+
+     # Prompt the user to select an operation or cancel
     msg = bot.reply_to(message, 'Select Operation or Select Cancel to cancel the operation', reply_markup=markup)
     bot.register_next_step_handler(msg, post_operation_selection, bot)
     
@@ -33,6 +37,7 @@ def post_operation_selection(message, bot):
             markup.row_width = 2
             for c in helper.getSpendCategories():
                 markup.add(c)
+
             # Handle the exception of trying to delete the last category
             if len(helper.getSpendCategories()) <= 1:
                 bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
@@ -51,7 +56,7 @@ def post_operation_selection(message, bot):
             bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
             raise Exception("Sorry I don't recognise this operation \"{}\"!".format(op))
     except Exception as e:
-        # print("hit exception")
+        # Handle exceptions and log errors
         helper.throw_exception(e, message, bot, logging)
     
 # Use the funtion to add a new category 

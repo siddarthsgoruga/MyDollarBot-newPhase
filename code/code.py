@@ -18,17 +18,22 @@ import summary
 from datetime import datetime
 from jproperties import Properties
 
+# Load configuration from user.properties
 configs = Properties()
 
 with open('user.properties', 'rb') as read_prop:
     configs.load(read_prop)
 
+# Get the API token from the configuration
 api_token = str(configs.get('api_token').data)
 
+# Create a Telegram bot using the API token
 bot = telebot.TeleBot(api_token)
 
+# Set the log level for the telebot library
 telebot.logger.setLevel(logging.INFO)
 
+# Dictionary to store user options
 option = {}
 
 
@@ -36,13 +41,14 @@ option = {}
 def listener(user_requests):
     for req in user_requests:
         if(req.content_type == 'text'):
+            # Print information about incoming messages
             print("{} name:{} chat_id:{} \nmessage: {}\n".format(str(datetime.now()), str(req.chat.first_name), str(req.chat.id), str(req.text)))
 
 
 bot.set_update_listener(listener)
 
 
-# defines how the /start and /help commands have to be handled/processed
+# Handle the /start and /menu commands
 @bot.message_handler(commands=['start', 'menu'])
 def start_and_menu_command(m):
     helper.read_json()
@@ -58,7 +64,7 @@ def start_and_menu_command(m):
     return True
 
 
-# defines how the /exit commands have to be handled/processed
+# Handle the /exit command
 @bot.message_handler(commands=['exit'])
 def exit_command(m):
     helper.read_json()
@@ -73,65 +79,68 @@ def exit_command(m):
     return True
 
 
-# defines how the /new command has to be handled/processed
-# function to add an expense
+# Handle the /add command to add an expense
 @bot.message_handler(commands=['add'])
 def command_add(message):
     add.run(message, bot)
 
 
-# function to add recurring expenses
+# Handle the /add_recurring command to add recurring expenses
 @bot.message_handler(commands=['add_recurring'])
 def command_add_recurring(message):
     add_recurring.run(message, bot)
     
     
-# function to fetch expenditure history of the user
+# Handle the /history command to fetch expenditure history of the user
 @bot.message_handler(commands=['history'])
 def command_history(message):
     history.run(message, bot)
 
 
-# function to edit date, category or cost of a transaction
+# Handle the /edit command to edit date, category, or cost of a transaction
 @bot.message_handler(commands=['edit'])
 def command_edit(message):
     edit.run(message, bot)
 
 
-# function to display total expenditure
+# Handle the /display command to display total expenditure
 @bot.message_handler(commands=['display'])
 def command_display(message):
     display.run(message, bot)
 
 
-# function to estimate future expenditure
+# Handle the /estimate command to estimate future expenditure
 @bot.message_handler(commands=['estimate'])
 def command_estimate(message):
     estimate.run(message, bot)
 
 
-# handles "/delete" command
+# Handle the /delete command
 @bot.message_handler(commands=['delete'])
 def command_delete(message):
     delete.run(message, bot)
 
+# Handle the /budget command
 @bot.message_handler(commands=['budget'])
 def command_budget(message):
     budget.run(message, bot)
 
+# Handle the /category command
 @bot.message_handler(commands=['category'])
 def command_category(message):
     category.run(message, bot)
-
+    
+# Handle the /income command    
 @bot.message_handler(commands=['income'])
 def command_income(message):
     income.run(message, bot)
 
-
+# Handle the /summary command
 @bot.message_handler(commands=['summary'])
 def command_category(message):
     summary.run(message, bot)
 
+# Handle incoming messages that are not commands
 @bot.message_handler(content_types=['audio', 'photo', 'voice', 'video', 'document','text', 'location', 'contact', 'sticker'])
 def default_command(message):
     chat_id = message.chat.id
@@ -143,17 +152,7 @@ def default_command(message):
     bot.send_message(chat_id, text_intro)
     return True
     
-
-
-# not used
-def addUserHistory(chat_id, user_record):
-    global user_list
-    if(not(str(chat_id) in user_list)):
-        user_list[str(chat_id)] = []
-    user_list[str(chat_id)].append(user_record)
-    return user_list
-
-
+# Main function to start the bot
 def main():
     try:
         bot.polling(none_stop=True)
