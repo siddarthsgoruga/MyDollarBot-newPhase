@@ -24,9 +24,11 @@ def post_type_selection(message, bot):
         chat_id = message.chat.id
         op = message.text
         options = helper.getBudgetTypes()
+
         if op not in options.values():
             bot.send_message(chat_id, 'Invalid', reply_markup=types.ReplyKeyboardRemove())
             raise Exception("Sorry I don't recognise this operation \"{}\"!".format(op))
+            
         if op == options['overall']:
             update_overall_budget(chat_id, bot)
         elif op == options['category']:
@@ -58,17 +60,29 @@ def update_overall_budget(chat_id, bot):
 def post_overall_amount_input(message, bot):
     try:
         chat_id = message.chat.id
+
         if message.text != "Cancel":
             amount_value = helper.validate_entered_amount(message.text)
-            if amount_value == 0:
-                raise Exception("Invalid amount.")
-            user_list = helper.read_json()
-            if str(chat_id) not in user_list:
-                user_list[str(chat_id)] = helper.createNewUserRecord()
-            user_list[str(chat_id)]['budget']['overall'] = amount_value
-            helper.write_json(user_list)
-            bot.send_message(chat_id, 'Budget Updated!')
-            return user_list
+            total_income = helper.getTotalIncome(chat_id)
+
+            if total_income is not None and float(amount_value) > float(total_income):
+                budget_deficit = float(amount_value) - float(total_income)
+                alert_message = f"⚠️\uFE0F Your budget exceeds your total income by ${budget_deficit:.2f} " + "\n(Do you want to update your budget)"
+    
+                # Define markup here before using it
+                markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+                options = helper.getYesNoOptions().values()
+                markup.row_width = 2
+                for c in options:
+                    markup.add(c)
+                
+                bot.send_message(chat_id, alert_message, reply_markup=markup)
+                msg = bot.reply_to(message, 'Select Option', reply_markup=markup)
+                bot.register_next_step_handler(msg, post__selection, bot, amount_value)
+        
+            else :
+                update_overall_budget_amount(message, amount_value, bot)
+
         else:
             text_intro = "Cancelled the operation.\nSelect "
             commands = helper.getExitCommands()
@@ -79,6 +93,27 @@ def post_overall_amount_input(message, bot):
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
 
+
+def post__selection(message, bot, amount_val ) :
+    chat_id = message.chat.id
+    selected_option = message.text
+    options = helper.getYesNoOptions()
+    if selected_option == options['yes']:
+        update_overall_budget_amount(message, amount_val, bot)
+    else :
+        update_overall_budget(chat_id, bot)
+
+
+def update_overall_budget_amount(message, amount_value, bot) :
+    chat_id = message.chat.id
+    if amount_value == 0:
+        raise Exception("Invalid amount.")
+    user_list = helper.read_json()
+    if str(chat_id) not in user_list:
+            user_list[str(chat_id)] = helper.createNewUserRecord()
+    user_list[str(chat_id)]['budget']['overall'] = amount_value
+    helper.write_json(user_list)
+    bot.send_message(chat_id, 'Budget Updated!')
 
 def update_category_budget(message, bot):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
