@@ -3,28 +3,31 @@ import matplotlib.pyplot as plt
 
 matplotlib.use('Agg')
 
-
+# Function to add labels to the bar chart
 def addlabels(x, y):
     for i in range(len(x)):
         plt.text(i, y[i] // 2, y[i], ha='center')
 
-
+# Function to visualize and save the expenditure bar chart
 def visualize(total_text, budgetData):
-    # set the color for bars
+    # Set the color for the bars
     colors = ['red', 'cornflowerblue', 'greenyellow', 'orange', 'violet', 'grey']
-    # plot the expense bar chart
+    
+    # Extract and summarize the expenditure by categories
     total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
     categ_val = {}
+
     # summarize the expense by categories
     for i in total_text_split:
         a = i.split(' ')
         a[1] = a[1].replace("$", "")
         categ_val[a[0]] = float(a[1])
 
-    # set categories as x-axis and amount as y-axis
+    # Set categories as x-axis and expenditure amount as y-axis
     x = list(categ_val.keys())
     y = list(categ_val.values())
 
+    # Create a bar chart with expenditure data
     plt.bar(categ_val.keys(), categ_val.values(), color=colors, edgecolor='black')
     addlabels(x, y)
 
@@ -32,15 +35,15 @@ def visualize(total_text, budgetData):
     plt.xlabel("Categories")
     plt.xticks(rotation=45)
 
-    # plot budget in the horizontal line format
+    # Plot budget as horizontal lines
     lines = []
     labels = []
     if isinstance(budgetData, str):
-        # if budget data is str denoting it is overall budget
+        # If budget data is a string, it represents the overall budget
         lines.append(plt.axhline(y=float(budgetData), color="r", linestyle="-"))
         labels.append("overall budget")
     elif isinstance(budgetData, dict):
-        # if budget data is dict denoting it is category budget
+        # If budget data is a dictionary, it represents category budgets
         colorCnt = 0
         # to avoid the budget override by each others, record the budget and adjust the position of the line
         duplicate = {}
@@ -64,7 +67,8 @@ def visualize(total_text, budgetData):
     plt.clf()
     plt.cla()
     plt.close()
-    
+
+# Function to visualize and save the expenditure pie chart  
 def vis(total_text):
     total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
     categ_val = {}
@@ -76,17 +80,14 @@ def vis(total_text):
     x = list(categ_val.keys())
     y = list(categ_val.values())
     
-    ##plt.bar(categ_val.keys(), categ_val.values(), color=[(1.00, 0, 0, 0.6), (0.2, 0.4, 0.6, 0.6), (0, 1.00, 0, 0.6), (1.00, 1.00, 0, 1.00)], edgecolor='blue')
-   ## addlabels(x, y)
+    # Create a pie chart with expenditure data
     plt.clf()
     plt.pie(y, labels=x, autopct='%.1f%%')
-    ##plt.ylabel("Categories")
-    ##plt.xlabel("Expenditure")
-    ##plt.xticks(rotation=90)
-
+    
+    # Save the chart as "pie.png"
     plt.savefig('pie.png')
 
-
+# Function to visualize and save the expenditure bar chart
 def viz(total_text):
     total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
     categ_val = {}
@@ -97,6 +98,8 @@ def viz(total_text):
 
     x = list(categ_val.keys())
     y = list(categ_val.values())
+
+    # Create a bar chart with expenditure data
     plt.clf()
     plt.bar(categ_val.keys(), categ_val.values(), color=[(1.00, 0, 0, 0.6), (0.2, 0.4, 0.6, 0.6), (0, 1.00, 0, 0.6), (1.00, 1.00, 0, 1.00)], edgecolor='blue')
     addlabels(x, y)
@@ -105,4 +108,5 @@ def viz(total_text):
     plt.xlabel("Categories")
     plt.xticks(rotation=45)
 
+    # Save the chart as "expend.png"
     plt.savefig('expend.png', bbox_inches='tight')
