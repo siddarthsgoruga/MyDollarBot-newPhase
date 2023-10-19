@@ -13,8 +13,8 @@ This video shows only the new features and enhancement of some older features. A
 ![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
 [![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/)
 ![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
-[![GitHub contributors](https://img.shields.io/github/contributors/prithvish-doshi-17/MyDollarBot-BOTGo)](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/graphs/contributors)
-[![DOI](https://zenodo.org/badge/414661894.svg)](https://zenodo.org/badge/latestdoi/414661894)
+[![GitHub contributors](https://img.shields.io/github/contributors/21Tulasi/MyDollarBot-newPhase)](https://github.com/21Tulasi/MyDollarBot-newPhase/graphs/contributors)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10023243.svg)]((https://zenodo.org/doi/10.5281/zenodo.10023242))
 [![Build Status](https://app.travis-ci.com/sak007/MyDollarBot-BOTGo.svg?branch=main)](https://app.travis-ci.com/github/sak007/MyDollarBot-BOTGo)
 [![codecov](https://codecov.io/gh/sak007/MyDollarBot-BOTGo/branch/main/graph/badge.svg?token=5AYMR8MNMP)](https://codecov.io/gh/sak007/MyDollarBot-BOTGo)
 [![GitHub issues](https://img.shields.io/github/issues/prithvish-doshi-17/MyDollarBot-BOTGo)](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/issues?q=is%3Aopen+is%3Aissue)
@@ -27,30 +27,32 @@ This video shows only the new features and enhancement of some older features. A
 
 TrackMyDollar is an easy-to-use Telegram Bot that assists you in recording your daily expenses on a local system without any hassle 
 With simple commands, this bot allows you to:
+- Add/Update/View/Delete Income
 - Add/Record a new spending
+- Add/Update/View/Delete Budget
 - Show the sum of your expenditure for the current day/month
 - Display your spending history
+- Summary report of all expenses done till date
 - Clear/Erase all your records
 - Edit/Change any spending details if you wish to
 
 
 ## What's new? (From Phase 3 to Phase 4)
 
-- Recurring expense:
-  Add a recurring expense that adds a certain amount every month to the user's spending, for any given category.
+- Manage Income:
+  User can add certain amount as income and can view/delete or update the same
   
-- Custom category:
-  User can add a new category and delete an existing category as per the needs
+- Alert messages:
+  The Bot alerts the user with a warning message when either the given budget exceeds the income(both overall and categorical budget) or the expense crosses the budget.
   
-- Budgeting:
-  User can see the budget value for the total expense and/or for each of the existing categories in the /display function
+- Summary report:
+  A PDF report is generated that consists of the summarised expenses done till date.
   
-- Better visualization:
-  Added pie charts, bar graphs with and without budget lines for the user to have a look at the spending history in a better manner
-  Added bar graph in the /history command to see spending across different categories
-  User can see the daily and monthly expenses for spending history
-  
-- Deployment on GCP (the bot is now available, and can be used on any device by searching for @testforbudgetmanagerbot on Telegram)
+- Cancelling an Operation:
+  A cancel option is provided at every stage of all the operations provided in the menu.
+   
+- Exit Option:
+  An exit option is provided to stop the prompt messages from the BOT.
 
 ## What more can be done?
 Please refer to the issue list available [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/issues) to see what more can be done to make MyDollarBot better. Please refer to the MyDollarBot project present [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/projects) to have a look at the tasks to be done, tasks currently in progress and tasks already done.
@@ -58,7 +60,8 @@ Please refer to the issue list available [here](https://github.com/prithvish-dos
 
 ## Demo
 
-https://user-images.githubusercontent.com/72677919/140454147-f879010a-173b-47b9-9cfb-a389171924de.mp4
+https://github.com/21Tulasi/MyDollarBot-newPhase/assets/68286340/26492210-eed5-4022-8a4e-cd5f2bee8d9c
+
 
 ## Installation guide
 
@@ -118,7 +121,7 @@ You can download and install the Telegram desktop application for your system fr
 <p>Title:'Track My Dollar'</p>
 <p>Version: '4.1'</p>
 <p>Description: 'An easy to use Telegram Bot to track everyday expenses'</p>
-<p>Authors(Iteration 4):'Tulasi, Siddarth, Yogitha, Deepika'</p>
+<p>Authors(Iteration 4):'Tulasi, Siddartha, Yogitha, Deepika'</p>
 <p>Authors(Iteration 3):'Vraj, Alex, Leo, Prithvish, Seeya'</p>
 <p>Authors(Iteration 2):'Athithya, Subramanian, Ashok, Zunaid, Rithik'</p>
 <p>Authors(Iteration 1):'Dev, Prakruthi, Radhika, Rohan, Sunidhi'</p>

@@ -4,7 +4,7 @@ This feature enables the user to see their expense in a graphical format to enab
 Currently, the /display command will provide the expenses as a message to the users via the bot. To better the UX, we have added the option to show the expenses in a Bar Graph and pie chart along with budget line.
 
 # Location of Code for this Feature
-The code that implements this feature can be found [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/blob/main/code/graphing.py)
+The code that implements this feature can be found [here](https://github.com/21Tulasi/MyDollarBot-newPhase/blob/main/code/graphing.py)
 
 # Code Description
 ## Functions

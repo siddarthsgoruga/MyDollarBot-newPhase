@@ -12,7 +12,7 @@ Currently we have the following expense categories set by default:
 The user can choose to add/delete/show categories, and after that, add the cost with custom category to the expense tracker.
 
 # Location of Code for this Feature
-The code that implements this feature can be found [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/blob/addCategories/code/category.py)
+The code that implements this feature can be found [here](https://github.com/21Tulasi/MyDollarBot-newPhase/blob/main/code/category.py)
 
 # Code Description
 ## Functions
