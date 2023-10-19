@@ -1,12 +1,12 @@
 # 💰 TrackMyDollar V3.0 - Budget On The Go(BOTGo) 💰
 
-Link to delta of Phase 3 - [https://drive.google.com/file/d/1VqQPTm4tFjG8mbixrjqvjnmgsYb8YD49/view?usp=sharing](https://drive.google.com/file/d/1VqQPTm4tFjG8mbixrjqvjnmgsYb8YD49/view?usp=sharing)
+Link to delta of Phase 4 - [Video to be added](https://drive.google.com/file/d/1VqQPTm4tFjG8mbixrjqvjnmgsYb8YD49/view?usp=sharin)
 
-This video shows only the new features and enhancement of some older features. All the other features from phase 2 are working as it is.
+This video shows only the new features and enhancement of some older features. All the other features from phase 3 are working as it is.
 <hr>
 <p align="center">
 <a><img  height=360 width=550 
-  src="https://github.com/deekay2310/MyDollarBot/blob/c56b4afd4fd5bbfffea0d0a4aade58596a5cb678/docs/0001-8711513694_20210926_212845_0000.png" alt="Expense tracking made easy!"></a>
+  src="https://github.com/deekay2310/MyDollarBot/blob/c56b4afd4fd5bbfffea0d0a4aade58596a5cb678/docs/0001-8711513694_20210926_212845_0000.png" alt="Tracking expenses made easy!"></a>
 </p>
 <hr>
 
@@ -34,7 +34,7 @@ With simple commands, this bot allows you to:
 - Edit/Change any spending details if you wish to
 
 
-## What's new? (From Phase 2 to Phase 3)
+## What's new? (From Phase 3 to Phase 4)
 
 - Recurring expense:
   Add a recurring expense that adds a certain amount every month to the user's spending, for any given category.
@@ -116,8 +116,9 @@ You can download and install the Telegram desktop application for your system fr
 
 <hr>
 <p>Title:'Track My Dollar'</p>
-<p>Version: '3.1'</p>
+<p>Version: '4.1'</p>
 <p>Description: 'An easy to use Telegram Bot to track everyday expenses'</p>
+<p>Authors(Iteration 4):'Tulasi, Siddarth, Yogitha, Deepika'</p>
 <p>Authors(Iteration 3):'Vraj, Alex, Leo, Prithvish, Seeya'</p>
 <p>Authors(Iteration 2):'Athithya, Subramanian, Ashok, Zunaid, Rithik'</p>
 <p>Authors(Iteration 1):'Dev, Prakruthi, Radhika, Rohan, Sunidhi'</p>
