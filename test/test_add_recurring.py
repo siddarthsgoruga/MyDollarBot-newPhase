@@ -105,8 +105,8 @@ def test_post_amount_input_working_withdata_chatid(mock_telebot, mocker):
 
     message = create_message("hello from testing!")
     add.post_amount_input(message, mc, 'Food')
-    assert(mc.send_message.called)
-    assert(mc.send_message.called_with(11, ANY))
+    assert mc.send_message.called
+    mc.send_message.assert_called_with(11, ANY)
 
 
 def test_add_user_record_nonworking(mocker):
