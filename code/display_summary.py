@@ -1,3 +1,4 @@
+# Import necessary modules and libraries
 import time
 import os
 import helper
@@ -7,25 +8,38 @@ import logging
 from telebot import types
 from datetime import datetime
 
-
+"""
+    Main function to run the display of total spending and corresponding plots.
+    :param message: Message object from the user.
+    :param bot: Telegram bot instance.
+    """
 def run(message, bot):
     helper.read_json()
     chat_id = message.chat.id
+
+    # Retrieve user's spending history
     history = helper.getUserHistory(chat_id)
+
+    # Check if there is no history data
     if history is None:
         bot.send_message(chat_id, "Sorry, there are no records of the spending!")
     else:
-        #print("***********calling the display_total function")
+        # Call the function to display total spendings
         display_total(message, bot)
         return data,data_image
 
-total_day=""
-total_month=""
-bud=""
-data=[]
-data_image=[]
+total_day="" # Initialize the total spending for the day
+total_month="" # Initialize the total spending for the month
+bud="" # Initialize budget data
+data=[] # List to store spending data text
+data_image=[] # List to store image filenames
 
 def display_total(message, bot):
+    """
+    Display total spendings and generate plots.
+    :param message: Message object from the user.
+    :param bot: Telegram bot instance.
+    """
     
     global total_day
     global total_month
@@ -39,22 +53,28 @@ def display_total(message, bot):
         total_text_day = ""
         total_text_month = ""
         budgetData = {}
+
+         # Determine the budget data based on the user's configuration
         if helper.isOverallBudgetAvailable(chat_id):
             budgetData = helper.getOverallBudget(chat_id)
         elif helper.isCategoryBudgetAvailable(chat_id):
             budgetData = helper.getCategoryBudget(chat_id)
 
+        # Query for the current day and month
         query_day = datetime.now().today().strftime(helper.getDateFormat())
         query_dayResult = [value for index, value in enumerate(history) if str(query_day) in value]
         query_month = datetime.now().today().strftime(helper.getMonthFormat())
         query_monthResult = [value for index, value in enumerate(history) if str(query_month) in value]
 
+        # Calculate total spendings for the day and month
         total_text_day = calculate_spendings(query_dayResult)
         total_text_month = calculate_spendings(query_monthResult)
 
         total_day = total_text_day
         total_month = total_text_month
         bud= budgetData
+
+        # Display total spending text for the day
         spending_text_day = display_budget_by_text(history, budgetData)
         spending_text_month = display_budget_by_text(history, budgetData)
         if len(total_text_day) == 0:
@@ -65,11 +85,10 @@ def display_total(message, bot):
         else:
             spending_text_day += "\nHere are your total spendings {}:\nCATEGORIES, AMOUNT \n{}".format(
                 'of the day'.lower(), total_text_day)
-            
-            #bot.send_message(chat_id, spending_text_day)
             data.append(spending_text_day)
             
 
+        # Display total spending text for the month
         if len(total_text_month) == 0:
             spending_text_month += "\nYou have no spendings for {}!".format('of the month'.lower())
             bot.send_message(chat_id, spending_text_month)
@@ -78,25 +97,23 @@ def display_total(message, bot):
         else:
             spending_text_month += "\nHere are your total spendings {}:\nCATEGORIES, AMOUNT \n{}".format(
             'of the month'.lower(), total_text_month)
-            
-            #bot.send_message(chat_id, spending_text_month)
         data.append(spending_text_month)
 
-
-        #query_acs= [value for index, value in enumerate(history)]
-        #queryResult_acs=calculate_spendings_acs(query_acs)
-        #query_desc= [value for index, value in enumerate(history)]
-        #queryResult_desc=calculate_spendings_desc(query_desc)
-
-        
-
+        # Generate and send plots
         plot_total(message,bot)
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
 
 def plot_total(message, bot):
+    """
+    Generate and send plots for total spendings.
+    :param message: Message object from the user.
+    :param bot: Telegram bot instance.
+    """
     chat_id = message.chat.id
+
+    # Generate and send plots for the day
     graphing_for_day.visualize(total_day,bud)
     data_image.append('expenditure_day.png')
     #os.remove('expenditure.png')
@@ -107,6 +124,8 @@ def plot_total(message, bot):
     graphing_for_day.vis(total_day)
     data_image.append('pie_day.png')
     #os.remove('pie.png')
+
+    # Generate and send plots for the month
     graphing_for_month.visualize(total_month,bud)
     graphing_for_month.visualize(total_month,bud)
     data_image.append('expenditure_month.png')
@@ -121,12 +140,17 @@ def plot_total(message, bot):
     #os.remove('pie.png')
 
 def calculate_spendings(queryResult):
+    """
+    Calculate total spendings from the query result.
+    :param queryResult: List of spending history data.
+    :return: Total spending text.
+    """
     total_dict = {}
 
     for row in queryResult:
-        # date,cat,money
+        # Split the row into date, category, and amount
         s = row.split(',')
-        # cat
+        # Category
         cat = s[1]
         if cat in total_dict:
             # round up to 2 decimal

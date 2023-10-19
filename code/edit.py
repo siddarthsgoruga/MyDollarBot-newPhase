@@ -9,10 +9,16 @@ def run(m, bot):
         chat_id = m.chat.id
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         markup.row_width = 2
+
+        # Check if there are spending records for the user
         if helper.getUserHistory(chat_id) is None:
                 raise Exception("Sorry! No spending records found!")
+        
+        # Check if user history is empty
         if helper.getUserHistory(chat_id) == 0:
                 raise Exception("Sorry! No spending records found!")
+        
+        # Create a menu for selecting expenses to edit
         for c in helper.getUserHistory(chat_id):
             expense_data = c.split(',')
             str_date = "Date=" + expense_data[0]
