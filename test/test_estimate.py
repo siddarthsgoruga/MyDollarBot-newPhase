@@ -2,7 +2,10 @@ import os
 import json
 from mock import patch
 from telebot import types
-from code import estimate
+import sys
+sys.path.append("code")
+import estimate
+
 
 
 @patch('telebot.telebot')

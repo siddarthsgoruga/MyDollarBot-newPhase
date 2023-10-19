@@ -3,9 +3,12 @@ import json
 import mock
 from mock.mock import patch
 from telebot import types
-from code import category
+#from code import category
 from mock import ANY
 
+import sys
+sys.path.append("code")
+import category
 
 dateFormat = '%d-%b-%Y'
 timeFormat = '%H:%M'

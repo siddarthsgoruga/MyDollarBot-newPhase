@@ -1,5 +1,10 @@
-from code import graphing
+#from code import graphing
 from mock import ANY
+
+
+import sys
+sys.path.append("code")
+import graphing
 
 dummy_total_text_none = ""
 dummy_total_text_data = """Food $10.0

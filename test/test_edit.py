@@ -2,8 +2,11 @@ import datetime
 
 from mock import patch
 from telebot import types
-from code import edit
 
+
+import sys
+sys.path.append("code")
+import edit
 MOCK_CHAT_ID = 101
 MOCK_USER_DATA = {
     str(MOCK_CHAT_ID): {'data': ["correct_mock_value"]},

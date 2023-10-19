@@ -1,9 +1,12 @@
 import os
 import json
-from code import delete
+#from code import delete
 from mock import patch
 from telebot import types
 
+import sys
+sys.path.append("code")
+import delete
 
 def test_read_json():
     try:
