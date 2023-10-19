@@ -48,12 +48,11 @@ With simple commands, this bot allows you to:
 - Summary report:
   A PDF report is generated that consists of the summarised expenses done till date.
   
-- Better visualization:
-  Added pie charts, bar graphs with and without budget lines for the user to have a look at the spending history in a better manner
-  Added bar graph in the /history command to see spending across different categories
-  User can see the daily and monthly expenses for spending history
-  
-- Deployment on GCP (the bot is now available, and can be used on any device by searching for @testforbudgetmanagerbot on Telegram)
+- Cancelling an Operation:
+  A cancel option is provided at every stage of all the operations provided in the menu.
+   
+- Exit Option:
+  An exit option is provided to stop the prompt messages from the BOT.
 
 ## What more can be done?
 Please refer to the issue list available [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/issues) to see what more can be done to make MyDollarBot better. Please refer to the MyDollarBot project present [here](https://github.com/prithvish-doshi-17/MyDollarBot-BOTGo/projects) to have a look at the tasks to be done, tasks currently in progress and tasks already done.
